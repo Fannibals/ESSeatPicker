@@ -7,6 +7,7 @@
     tools:context=".MainActivity">
 
     <com.ethan.esseatpicker.SeatPicker
+        android:id="@+id/seat_picker"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#E5E8E8"

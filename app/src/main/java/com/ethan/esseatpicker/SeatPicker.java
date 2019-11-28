@@ -33,7 +33,6 @@ public class SeatPicker extends View {
     public SeatPicker(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         init(context,attrs);
-        init();
     }
 
     public SeatPicker(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
@@ -43,6 +42,7 @@ public class SeatPicker extends View {
     public SeatPicker(Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
     }
+
 
     /**
      * init Head Part
@@ -55,8 +55,27 @@ public class SeatPicker extends View {
      * seat Paint
      */
     Paint seatPaint;
-
     float screenHeight = 100;
+
+    /**
+     * 座位已售
+     */
+    private static final int SEAT_TYPE_SOLD = 1;
+
+    /**
+     * 座位已经选中
+     */
+    private static final int SEAT_TYPE_SELECTED = 2;
+
+    /**
+     * 座位可选
+     */
+    private static final int SEAT_TYPE_AVAILABLE = 3;
+
+    /**
+     * 座位不可用
+     */
+    private static final int SEAT_TYPE_NOT_AVAILABLE = 4;
 
     /**
      * Res ID for seats
@@ -186,6 +205,10 @@ public class SeatPicker extends View {
         }
     }
 
+    public void init(int row, int column){
+        init();
+    }
+
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
@@ -214,7 +237,7 @@ public class SeatPicker extends View {
     private void drawScreen(Canvas canvas){
         //TODO: Look at Path
         float startY = headHeight;
-        float centerX = seatBitmapWidth * getMatrixScaleX() / 2;
+        float centerX = lineNumberPaint.measureText("1") + leftMargin + (seatBitmapWidth)/ 2f;
 
         Path path = new Path();
         path.moveTo(centerX,startY);
@@ -228,12 +251,17 @@ public class SeatPicker extends View {
     }
 
     Paint lineNumberPaint;
+    /**
+     * left margin for line numbers
+     */
+    float leftMargin = 50;
     ArrayList<String> lineNumbers = new ArrayList<>();
     private void drawNumber(Canvas canvas){
         // 没想好x怎么算
-        float x = 50;
-        float startY = headHeight + screenHeight + x + defaultImgH;
+        float x = leftMargin;
+        float startY = headHeight + screenHeight + x + defaultImgH; // defaultImgH is necessary
         for (String line:lineNumbers) {
+            // arg x and y here are relative to text's baseline
             canvas.drawText(line,x,startY+ (verSpacing+ lineNumberTxtHeight)*lineNumbers.indexOf(line),lineNumberPaint);
         }
     }
@@ -250,12 +278,38 @@ public class SeatPicker extends View {
                 if (left > getWidth()) continue;
                 tempMatrix.setTranslate(left,top);
                 tempMatrix.postScale(xScale1,yScale1,left,top);
-                canvas.drawBitmap(seatBitmap,tempMatrix,seatPaint);
+
+                int seatType = getSeatType(i,j);
+                switch (seatType){
+                    case SEAT_TYPE_AVAILABLE:
+                        canvas.drawBitmap(seatBitmap,tempMatrix,seatPaint);
+                        break;
+                    case SEAT_TYPE_SELECTED:
+                        canvas.drawBitmap(selectedSeatBitmap,tempMatrix,seatPaint);
+                        break;
+                    case SEAT_TYPE_SOLD:
+                        canvas.drawBitmap(soldSeatBitmap,tempMatrix,seatPaint);
+                        break;
+                    case SEAT_TYPE_NOT_AVAILABLE:
+                        break;
+                }
+
             }
         }
     }
 
+    private int getSeatType(int row, int column){
+        // logic of selected
 
+        if (seatClassifier != null) {
+            if (!seatClassifier.isValid(row,column)){
+                return SEAT_TYPE_NOT_AVAILABLE;
+            }else if (seatClassifier.isSold(row, column)){
+                return SEAT_TYPE_SOLD;
+            }
+        }
+        return SEAT_TYPE_AVAILABLE;
+    }
 
     // Draw the top : info about pics stand for
     Matrix tempMatrix = new Matrix();
@@ -332,6 +386,19 @@ public class SeatPicker extends View {
     private float getMatrixScaleX() {
         matrix.getValues(m);
         return m[Matrix.MSCALE_X];
+    }
+
+    public interface SeatClassifier {
+        boolean isValid (int row, int column);
+        boolean isSold (int row, int column);
+        void selected(int row, int colum);
+        void unSelected(int row, int column);
+    }
+    private SeatClassifier seatClassifier;
+
+
+    public void setSeatClassifier(SeatClassifier seatClassifier){
+        this.seatClassifier = seatClassifier;
     }
 
 }
