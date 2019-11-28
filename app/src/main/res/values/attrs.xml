@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="SeatPicker">
+        <attr name="seat_selected" format="reference" />
+        <attr name="seat_sold" format="reference" />
+        <attr name="seat_available" format="reference" />
+        <attr name="overview_selected" format="color" />
+        <attr name="overview_sold" format="color" />
+        <attr name="txt_color" format="color"/>
+    </declare-styleable>
+</resources>
