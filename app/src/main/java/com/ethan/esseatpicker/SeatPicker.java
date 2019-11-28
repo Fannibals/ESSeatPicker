@@ -8,8 +8,11 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.graphics.Path;
+import android.graphics.Rect;
 import android.os.Parcelable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.Nullable;
@@ -48,6 +51,11 @@ public class SeatPicker extends View {
     Bitmap headBitmap;
     float headHeight;
 
+    /**
+     * seat Paint
+     */
+    Paint seatPaint;
+
     float screenHeight = 100;
 
     /**
@@ -76,12 +84,12 @@ public class SeatPicker extends View {
     /**
      * 默认的座位图宽度,如果使用的自己的座位图片比这个尺寸大或者小,会缩放到这个大小
      */
-    private float defaultImgW = 44;
+    private float defaultImgW = 45;
 
     /**
      * 默认的座位图高度
      */
-    private float defaultImgH = 38;
+    private float defaultImgH = 40;
 
     /**
      * 座位图片的宽度
@@ -92,6 +100,29 @@ public class SeatPicker extends View {
      * 座位图片的高度
      */
     private int seatHeight;
+
+    /**
+     * 整个座位图的宽度
+     */
+    int seatBitmapWidth;
+
+    /**
+     * 整个座位图的高度
+     */
+    int seatBitmapHeight;
+
+    /**
+     * 座位水平间距
+     */
+    int spacing;
+
+    /**
+     * 座位垂直间距
+     */
+    int verSpacing;
+
+    int column = 15;
+    int row = 10;
 
     private void init(Context context, AttributeSet attrs){
         TypedArray typedArray = context.obtainStyledAttributes(attrs,R.styleable.SeatPicker);
@@ -108,6 +139,7 @@ public class SeatPicker extends View {
     Paint.FontMetrics lineNumberPaintFontMetrics;
     private void init() {
         // Paints
+        seatPaint = new Paint();
         headPaint = new Paint();
         headHeight = dip2Px(35);
         headPaint.setStyle(Paint.Style.FILL);
@@ -122,8 +154,9 @@ public class SeatPicker extends View {
         //
         lineNumberPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         lineNumberPaint.setColor(Color.GREEN);
-        lineNumberPaint.setTextSize(getResources().getDisplayMetrics().density * 16);
-        lineNumberTxtHeight = lineNumberPaint.measureText("4");
+        lineNumberPaint.setTextSize(getResources().getDisplayMetrics().density * 18);
+//        lineNumberTxtHeight = lineNumberPaint.measureText("1");
+        lineNumberTxtHeight = defaultImgH;
         lineNumberPaintFontMetrics = lineNumberPaint.getFontMetrics();
         lineNumberPaint.setTextAlign(Paint.Align.CENTER);
 
@@ -141,10 +174,15 @@ public class SeatPicker extends View {
         seatHeight = (int) (seatBitmap.getHeight() * yScale1);
         seatWidth = (int) (seatBitmap.getWidth() * xScale1);
 
+        spacing = (int) dip2Px(7);
+        verSpacing = (int) dip2Px(12);
+
+        seatBitmapWidth = column * seatWidth + (column - 1) * spacing;
+        seatBitmapHeight = row * seatHeight + (row - 1) * verSpacing;
+
         //
-        String[] nums = {"1", "2", "3", "4", "5"};
-        for (String num : nums) {
-            lineNumbers.add(num);
+        for(int i=1;i<=row;i++) {
+            lineNumbers.add(Integer.toString(i));
         }
     }
 
@@ -166,21 +204,54 @@ public class SeatPicker extends View {
         }
         // draw the head top
         canvas.drawBitmap(headBitmap,0,0,null);
+        drawSeat(canvas);
         drawNumber(canvas);
+        drawScreen(canvas);
+
 
     }
     Paint pathPaint;
     private void drawScreen(Canvas canvas){
         //TODO: Look at Path
+        float startY = headHeight;
+        float centerX = seatBitmapWidth * getMatrixScaleX() / 2;
+
+        Path path = new Path();
+        path.moveTo(centerX,startY);
+        float screenWidth = seatBitmapWidth*0.6f;
+        path.lineTo(centerX - screenWidth / 2, startY);
+        path.lineTo(centerX - screenWidth / 2 + screenHeight / 2, startY+ screenHeight);
+        path.lineTo(centerX + screenWidth / 2 - screenHeight / 2, startY+ screenHeight);
+        path.lineTo(centerX + screenWidth / 2, startY);
+
+        canvas.drawPath(path,pathPaint);
     }
 
     Paint lineNumberPaint;
     ArrayList<String> lineNumbers = new ArrayList<>();
     private void drawNumber(Canvas canvas){
+        // 没想好x怎么算
         float x = 50;
-        float startY = headHeight + screenHeight;
+        float startY = headHeight + screenHeight + x + defaultImgH;
         for (String line:lineNumbers) {
-            canvas.drawText(line,x,startY+ 50*lineNumbers.indexOf(line),lineNumberPaint);
+            canvas.drawText(line,x,startY+ (verSpacing+ lineNumberTxtHeight)*lineNumbers.indexOf(line),lineNumberPaint);
+        }
+    }
+
+    private void drawSeat(Canvas canvas){
+        for (int i = 0; i < row; i++) {
+            float top = i* seatHeight+ i * verSpacing + (headHeight + screenHeight + 50);
+            float bottom = top + seatHeight;
+            if (top > getHeight()) continue;
+
+            for (int j = 0; j < column; j++) {
+                float left = j*(seatWidth + spacing)+(50 + spacing*2);
+                float right = left + seatWidth;
+                if (left > getWidth()) continue;
+                tempMatrix.setTranslate(left,top);
+                tempMatrix.postScale(xScale1,yScale1,left,top);
+                canvas.drawBitmap(seatBitmap,tempMatrix,seatPaint);
+            }
         }
     }
 
@@ -196,7 +267,7 @@ public class SeatPicker extends View {
         float spacing1 = dip2Px(5);
 
         int picNum = 3;
-        float width  = (seatWidth+spacing+spacing1)*picNum;
+        float width  = (seatWidth+spacing+spacing1+txtWidthForTwo)*picNum;
 
         // Create a new Bitmap
         Bitmap bitmap = Bitmap.createBitmap(getWidth(), (int) headHeight, Bitmap.Config.ARGB_8888);
@@ -238,6 +309,29 @@ public class SeatPicker extends View {
         Paint.FontMetrics fontMetrics = p.getFontMetrics();
         int baseline = (int) ((bottom + top - fontMetrics.ascent) / 2);
         return baseline;
+    }
+
+    float[] m = new float[9];
+    Matrix matrix = new Matrix();
+
+    private float getTranslateX() {
+        matrix.getValues(m);
+        return m[2];
+    }
+
+    private float getTranslateY() {
+        matrix.getValues(m);
+        return m[5];
+    }
+
+    private float getMatrixScaleY() {
+        matrix.getValues(m);
+        return m[4];
+    }
+
+    private float getMatrixScaleX() {
+        matrix.getValues(m);
+        return m[Matrix.MSCALE_X];
     }
 
 }
