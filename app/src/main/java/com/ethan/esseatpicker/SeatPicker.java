@@ -295,10 +295,16 @@ public class SeatPicker extends View {
 
     }
     Paint pathPaint;
+    String screenName;
+
+    public void setScreenName(String screenName) {
+        this.screenName = screenName;
+    }
+
     private void drawScreen(Canvas canvas){
         //TODO: Look at Path
         float startY = headHeight;
-        float centerX = lineNumberPaint.measureText("1") + leftMargin + (seatBitmapWidth)/ 2f;
+        float centerX = leftMargin + (seatBitmapWidth)/ 2f;
 
         Path path = new Path();
         path.moveTo(centerX,startY);
@@ -308,7 +314,16 @@ public class SeatPicker extends View {
         path.lineTo(centerX + screenWidth / 2 - screenHeight / 2, startY+ screenHeight);
         path.lineTo(centerX + screenWidth / 2, startY);
 
+        pathPaint.setColor(Color.parseColor("#e2e2e2"));
         canvas.drawPath(path,pathPaint);
+
+        if (!screenName.isEmpty()){
+            pathPaint.setColor(Color.BLACK);
+            pathPaint.setTextSize(30);
+            float strWidth = pathPaint.measureText(screenName);
+            float strHeight = getYForVertCenter(pathPaint, startY, startY + screenHeight);
+            canvas.drawText(screenName,centerX - strWidth/2, strHeight,pathPaint);
+        }
     }
 
     Paint focusPaint;

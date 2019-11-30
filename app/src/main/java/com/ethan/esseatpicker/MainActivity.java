@@ -18,6 +18,7 @@ public class MainActivity extends AppCompatActivity {
     private void initView(){
         seatPicker = findViewById(R.id.seat_picker);
         seatPicker.setMaxSelected(3);
+        seatPicker.setScreenName("Ethan Shen");
         seatPicker.setSeatClassifier(new SeatPicker.SeatClassifier() {
             @Override
             public boolean isValid(int row, int column) {
