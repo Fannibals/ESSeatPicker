@@ -524,8 +524,8 @@ public class SeatPicker extends View {
                         else{
                             selectedSeats.add(uid);
                             seatClassifier.selected(seat[0],seat[1]);
-                            lastX =  x / mScaleFactor;
-                            lastY =  y / mScaleFactor;
+                            lastX =  (x-mBaseTranslateX) / mScaleFactor;
+                            lastY =  (y-mBaseTranslateY) / mScaleFactor;
                             selected = true;
                         }
                     }
@@ -598,10 +598,10 @@ public class SeatPicker extends View {
     private void distanceToCenter() {
         int width = getWidth();
         int height = getHeight();
-        float desX = width / 3;
-        float desY = height / 3;
-        mBaseTranslateX = desX / mScaleFactor - lastX;
-        mBaseTranslateY = desY / mScaleFactor - lastY;
+        float desX = width / 3f;
+        float desY = height / 3f;
+        mBaseTranslateX = (desX - lastX) / mScaleFactor ;
+        mBaseTranslateY = (desY - lastY) / mScaleFactor ;
     }
 
 
