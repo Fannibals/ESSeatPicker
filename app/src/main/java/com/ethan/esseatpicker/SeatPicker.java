@@ -10,8 +10,10 @@ import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
+import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.widget.Toast;
 
@@ -200,6 +202,7 @@ public class SeatPicker extends View {
     Paint.FontMetrics lineNumberPaintFontMetrics;
     float[] seatBaseM = {0,0,0,0};
     private void init() {
+        initGestures();
         // Paints
         seatPaint = new Paint();
         headPaint = new Paint();
@@ -288,10 +291,15 @@ public class SeatPicker extends View {
         }
         // draw the head top
         canvas.drawBitmap(headBitmap,0,0,null);
+        drawThumbNail(canvas);
+        tempMatrix.reset();
+        tempMatrix.postTranslate(mBaseTranslateX,mBaseTranslateY);
+        tempMatrix.postScale(mScaleFactor,mScaleFactor);
+        canvas.concat(tempMatrix);
+        drawScreen(canvas);
         drawSeat(canvas);
         drawNumber(canvas);
-        drawScreen(canvas);
-        drawThumbNail(canvas);
+
 
     }
     Paint pathPaint;
@@ -428,6 +436,7 @@ public class SeatPicker extends View {
 
     // Draw the top : info about pics stand for
     Matrix tempMatrix = new Matrix();
+    Matrix mCanvasMatrix = new Matrix();
     Bitmap drawTopPart(){
         float txtY = getYForVertCenter(headPaint,0,headHeight);
 
@@ -470,51 +479,103 @@ public class SeatPicker extends View {
         return bitmap;
     }
 
+
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         // get the x,y corresponding to the content view
-        int y = (int) event.getY();
-        int x = (int) event.getX();
         super.onTouchEvent(event);
         gestureDetector.onTouchEvent(event);
+        scaleGestureDetector.onTouchEvent(event);
+
 
         return true;
     }
 
     ArrayList<Integer> selectedSeats = new ArrayList<Integer>();
 
-    GestureDetector gestureDetector = new GestureDetector(getContext(), new GestureDetector.SimpleOnGestureListener(){
-        @Override
-        public boolean onSingleTapConfirmed(MotionEvent e) {
-            int y = (int) e.getY();
-            int x = (int) e.getX();
-            int[] seat = getSeatID(x,y);
+    GestureDetector gestureDetector;
+    ScaleGestureDetector scaleGestureDetector;
 
-            if (seat == null) return false;
-            if (seatClassifier != null && !seatClassifier.isSold(seat[0],seat[1]) &&
-                    seatClassifier.isValid(seat[0],seat[1])){
-                int uid = getID(seat[0],seat[1]);
-                if (selectedSeats.contains(uid)){
-                    // index vs. object
-                    selectedSeats.remove(Integer.valueOf(uid));
-                    seatClassifier.unSelected(seat[0],seat[1]);
-                }else{
-                    if (selectedSeats.size() >= maxSelected) {
-                        Toast.makeText(getContext(), "Can only select " + maxSelected + " seats",
-                                Toast.LENGTH_SHORT).show();}
-                    else{
-                        selectedSeats.add(uid);
-                        seatClassifier.selected(seat[0],seat[1]);
+    private void initGestures(){
+        gestureDetector = new GestureDetector(getContext(), new GestureDetector.SimpleOnGestureListener(){
+            @Override
+            public boolean onSingleTapConfirmed(MotionEvent e) {
+                int y = (int) e.getY();
+                int x = (int) e.getX();
+                int[] seat = getSeatID(x,y);
+
+                if (seat == null) return false;
+                if (seatClassifier != null && !seatClassifier.isSold(seat[0],seat[1]) &&
+                        seatClassifier.isValid(seat[0],seat[1])){
+                    int uid = getID(seat[0],seat[1]);
+                    if (selectedSeats.contains(uid)){
+                        // index vs. object
+                        selectedSeats.remove(Integer.valueOf(uid));
+                        seatClassifier.unSelected(seat[0],seat[1]);
+                    }else{
+                        if (selectedSeats.size() >= maxSelected) {
+                            Toast.makeText(getContext(), "Can only select " + maxSelected + " seats",
+                                    Toast.LENGTH_SHORT).show();}
+                        else{
+                            selectedSeats.add(uid);
+                            seatClassifier.selected(seat[0],seat[1]);
+                        }
                     }
+
+                    invalidate();
                 }
 
-                invalidate();
+
+                return super.onSingleTapConfirmed(e);
             }
 
+            @Override
+            public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+                float scale = mScaleFactor;
+                mBaseTranslateX += -distanceX / scale;
+                mBaseTranslateY += -distanceY / scale;
+                tempMatrix.postTranslate(mBaseTranslateX,mBaseTranslateY);
+                invalidate();
+                return true;
+            }
 
-            return super.onSingleTapConfirmed(e);
-        }
-    });
+            @Override
+            public boolean onDoubleTap(MotionEvent e) {
+                reset();
+                return super.onDoubleTap(e);
+            }
+        });
+
+        scaleGestureDetector = new ScaleGestureDetector(getContext(),new ScaleGestureDetector.SimpleOnScaleGestureListener(){
+            @Override
+            public boolean onScale(ScaleGestureDetector detector) {
+                float scaleFactor = detector.getScaleFactor();
+                mScaleFactor *= scaleFactor;
+                if (mScaleFactor >= mMaxScale || scaleFactor >= mMaxScale)
+                    mScaleFactor = mMaxScale; scaleFactor = mMaxScale;
+                if (mScaleFactor <= mMinScale || scaleFactor <= mMinScale)
+                    mScaleFactor = mMinScale; scaleFactor = mMinScale;
+                float fx = detector.getFocusX();
+                float fy = detector.getFocusY();
+                tempMatrix.reset();
+                tempMatrix.preScale(scaleFactor, scaleFactor,fx,fy);
+                invalidate();
+                return true;
+            }
+        });
+
+    }
+
+    private void reset(){
+        tempMatrix.reset();
+        mBaseTranslateX = 0;
+        mBaseTranslateY = 0;
+        mScaleFactor = 1;
+        invalidate();
+    }
+
+
+
 
     // contor pairing function
     private int getID(int row,int column){
@@ -523,13 +584,13 @@ public class SeatPicker extends View {
 
 
     private int[] getSeatID(int x, int y){
-        float top = seatBaseM[0];
-        float left = seatBaseM[2];
-        int tempColumn = (int)(x - left) / (seatWidth+spacing);
-        int tempRow = (int)(y - top) / (seatHeight+verSpacing);
+        float top = (seatBaseM[0] + mBaseTranslateY)*mScaleFactor;
+        float left = (seatBaseM[2] + mBaseTranslateX)*mScaleFactor;
+        int tempColumn = (int)((x - left) / ((seatWidth+spacing)*mScaleFactor));
+        int tempRow = (int)((y - top) / ((seatHeight+verSpacing)*mScaleFactor));
 
-        float xMax = left + (++tempColumn) * (seatWidth+spacing) - spacing;
-        float yMax = top +  (++tempRow)* (seatHeight+verSpacing) - verSpacing;
+        float xMax = left + (++tempColumn) * (seatWidth+spacing)*mScaleFactor - spacing*mScaleFactor;
+        float yMax = top +  (++tempRow)* (seatHeight+verSpacing)*mScaleFactor - verSpacing*mScaleFactor;
         if (x > xMax || y > yMax || tempRow > this.row
                 || tempColumn > this.column || x < left || y < top) {
             return null;
@@ -552,26 +613,17 @@ public class SeatPicker extends View {
     float[] m = new float[9];
     Matrix matrix = new Matrix();
 
-    private float getTranslateX() {
-        matrix.getValues(m);
-        return m[2];
-    }
-
-    private float getTranslateY() {
-        matrix.getValues(m);
-        return m[5];
-    }
-
-    private float getMatrixScaleY() {
-        matrix.getValues(m);
-        return m[4];
-    }
-
-    private float getMatrixScaleX() {
-        matrix.getValues(m);
-        return m[Matrix.MSCALE_X];
-    }
-
+    private float mBaseTranslateX = 0;
+    private float mBaseTranslateY = 0;
+    private float mScaleFactor = 1;
+    /**
+     * Maximum scale factor
+     */
+    private float mMaxScale = 2.5f;
+    /**
+     * Minimum scale factor
+     */
+    private float mMinScale = 0.5f;
 
     private SeatClassifier seatClassifier;
     public interface SeatClassifier {
