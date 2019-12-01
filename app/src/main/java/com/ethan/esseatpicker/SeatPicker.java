@@ -293,8 +293,13 @@ public class SeatPicker extends View {
         canvas.drawBitmap(headBitmap,0,0,null);
         drawThumbNail(canvas);
         tempMatrix.reset();
-        tempMatrix.postTranslate(mBaseTranslateX,mBaseTranslateY);
-        tempMatrix.postScale(mScaleFactor,mScaleFactor);
+        if (selected){
+            focusToSelectedSeat();
+        }else{
+            tempMatrix.preScale(mScaleFactor,mScaleFactor);
+            tempMatrix.preTranslate(mBaseTranslateX,mBaseTranslateY);
+
+        }
         canvas.concat(tempMatrix);
         drawScreen(canvas);
         drawSeat(canvas);
@@ -519,6 +524,9 @@ public class SeatPicker extends View {
                         else{
                             selectedSeats.add(uid);
                             seatClassifier.selected(seat[0],seat[1]);
+                            lastX =  x / mScaleFactor;
+                            lastY =  y / mScaleFactor;
+                            selected = true;
                         }
                     }
 
@@ -575,6 +583,26 @@ public class SeatPicker extends View {
     }
 
 
+    boolean selected = false;
+    float lastX = 0;
+    float lastY = 0;
+    private void focusToSelectedSeat(){
+        if (mScaleFactor <= 1.5f) mScaleFactor = 1.5f;
+        distanceToCenter();
+        tempMatrix.preScale(mScaleFactor,mScaleFactor);
+        tempMatrix.preTranslate(mBaseTranslateX,mBaseTranslateY);
+        selected = false;
+        getWidth();
+    }
+
+    private void distanceToCenter() {
+        int width = getWidth();
+        int height = getHeight();
+        float desX = width / 3;
+        float desY = height / 3;
+        mBaseTranslateX = desX / mScaleFactor - lastX;
+        mBaseTranslateY = desY / mScaleFactor - lastY;
+    }
 
 
     // contor pairing function
@@ -586,6 +614,7 @@ public class SeatPicker extends View {
     private int[] getSeatID(int x, int y){
         float top = (seatBaseM[0] + mBaseTranslateY)*mScaleFactor;
         float left = (seatBaseM[2] + mBaseTranslateX)*mScaleFactor;
+
         int tempColumn = (int)((x - left) / ((seatWidth+spacing)*mScaleFactor));
         int tempRow = (int)((y - top) / ((seatHeight+verSpacing)*mScaleFactor));
 

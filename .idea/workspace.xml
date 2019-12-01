@@ -21,7 +21,6 @@
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/ethan/esseatpicker/SeatPicker.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/ethan/esseatpicker/SeatPicker.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -64,8 +63,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/ethan/esseatpicker/SeatPicker.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="164">
-              <caret line="554" column="72" selection-start-line="554" selection-start-column="72" selection-end-line="554" selection-end-column="72" />
+            <state relative-caret-position="179">
+              <caret line="591" column="65" selection-start-line="591" selection-start-column="65" selection-end-line="591" selection-end-column="65" />
               <folding>
                 <element signature="e#771#903#0" />
                 <element signature="e#909#1044#0" />
@@ -103,6 +102,7 @@
                 <element signature="e#6496#6614#0" />
                 <element signature="e#6620#6773#0" />
                 <element signature="e#6779#6942#0" />
+                <element signature="e#7819#7820#0" expanded="true" />
                 <element signature="e#7338#7994#0" />
                 <element signature="e#8179#8219#1" />
                 <element signature="e#8048#9528#0" />
@@ -118,11 +118,15 @@
                 <element signature="e#11691#11745#1" />
                 <element signature="e#15360#15520#1" />
                 <element signature="e#17502#17579#0" />
+                <element signature="e#18612#18613#0" expanded="true" />
+                <element signature="e#18681#18682#0" expanded="true" />
+                <element signature="e#19552#19553#0" expanded="true" />
                 <element signature="e#16144#16218#0" />
+                <element signature="e#19625#19626#0" expanded="true" />
                 <element signature="e#18187#18417#0" />
-                <element signature="e#16959#17180#0" />
                 <element signature="e#19149#19262#0" />
                 <element signature="e#19435#19482#1" />
+                <element signature="e#20957#20958#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -340,10 +344,10 @@
       <window_info id="Capture Tool" order="7" />
       <window_info id="Favorites" order="8" side_tool="true" />
       <window_info anchor="bottom" id="Run" order="0" weight="0.64215684" />
-      <window_info active="true" anchor="bottom" id="Logcat" order="1" visible="true" weight="0.4644608" />
+      <window_info anchor="bottom" id="Logcat" order="1" weight="0.4644608" />
       <window_info anchor="bottom" id="TODO" order="2" />
       <window_info anchor="bottom" id="Android Profiler" order="3" />
-      <window_info anchor="bottom" id="Debug" order="4" weight="0.41299018" />
+      <window_info active="true" anchor="bottom" id="Debug" order="4" visible="true" weight="0.41299018" />
       <window_info anchor="bottom" id="Terminal" order="5" weight="0.3286517" />
       <window_info anchor="bottom" id="Event Log" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Flutter Performance" order="7" side_tool="true" />
@@ -388,26 +392,13 @@
       <window_info anchor="right" id="Preview" order="7" weight="0.32931727" />
     </layout-to-restore>
   </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-method">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/ethan/esseatpicker/SeatPicker.java</url>
-          <line>583</line>
-          <properties class="com.ethan.esseatpicker.SeatPicker" method="getSeatID" />
-          <option name="timeStamp" value="36" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
-    <watches-manager>
-      <configuration name="app">
-        <watch expression="getMatrixScaleY()" language="JAVA" />
-        <watch expression="getMatrixScaleX()" language="JAVA" />
-      </configuration>
-    </watches-manager>
-  </component>
   <component name="debuggerHistoryManager">
     <expressions id="watch">
+      <expression>
+        <expression-string>x / 2</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
       <expression>
         <expression-string>getMatrixScaleX()</expression-string>
         <language-id>JAVA</language-id>
@@ -568,11 +559,13 @@
     </entry>
     <entry file="file://$USER_HOME$/Library/Android/sdk/sources/android-29/android/view/View.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="143">
-          <caret line="15883" column="36" selection-start-line="15883" selection-start-column="36" selection-end-line="15883" selection-end-column="36" />
+        <state relative-caret-position="262">
+          <caret line="15523" column="21" selection-start-line="15523" selection-start-column="21" selection-end-line="15523" selection-end-column="21" />
           <folding>
             <element signature="e#576476#576477#0" expanded="true" />
             <element signature="e#576507#576508#0" expanded="true" />
+            <element signature="e#638946#638947#0" expanded="true" />
+            <element signature="e#638983#638984#0" expanded="true" />
             <element signature="e#652032#652033#0" expanded="true" />
             <element signature="e#652078#652079#0" expanded="true" />
             <element signature="e#981021#981022#0" expanded="true" />
@@ -581,10 +574,21 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$USER_HOME$/Library/Android/sdk/sources/android-29/android/view/MotionEvent.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="232">
+          <caret line="2215" column="19" lean-forward="true" selection-start-line="2215" selection-start-column="19" selection-end-line="2215" selection-end-column="19" />
+          <folding>
+            <element signature="e#89693#89694#0" expanded="true" />
+            <element signature="e#89774#89775#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/ethan/esseatpicker/SeatPicker.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="164">
-          <caret line="554" column="72" selection-start-line="554" selection-start-column="72" selection-end-line="554" selection-end-column="72" />
+        <state relative-caret-position="179">
+          <caret line="591" column="65" selection-start-line="591" selection-start-column="65" selection-end-line="591" selection-end-column="65" />
           <folding>
             <element signature="e#771#903#0" />
             <element signature="e#909#1044#0" />
@@ -622,6 +626,7 @@
             <element signature="e#6496#6614#0" />
             <element signature="e#6620#6773#0" />
             <element signature="e#6779#6942#0" />
+            <element signature="e#7819#7820#0" expanded="true" />
             <element signature="e#7338#7994#0" />
             <element signature="e#8179#8219#1" />
             <element signature="e#8048#9528#0" />
@@ -637,11 +642,15 @@
             <element signature="e#11691#11745#1" />
             <element signature="e#15360#15520#1" />
             <element signature="e#17502#17579#0" />
+            <element signature="e#18612#18613#0" expanded="true" />
+            <element signature="e#18681#18682#0" expanded="true" />
+            <element signature="e#19552#19553#0" expanded="true" />
             <element signature="e#16144#16218#0" />
+            <element signature="e#19625#19626#0" expanded="true" />
             <element signature="e#18187#18417#0" />
-            <element signature="e#16959#17180#0" />
             <element signature="e#19149#19262#0" />
             <element signature="e#19435#19482#1" />
+            <element signature="e#20957#20958#0" expanded="true" />
           </folding>
         </state>
       </provider>
