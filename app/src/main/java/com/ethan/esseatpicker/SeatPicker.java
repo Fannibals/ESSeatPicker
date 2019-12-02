@@ -1,5 +1,9 @@
 package com.ethan.esseatpicker;
 
+import android.animation.Animator;
+import android.animation.ObjectAnimator;
+import android.animation.TypeEvaluator;
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
@@ -9,12 +13,14 @@ import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.Point;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -298,7 +304,6 @@ public class SeatPicker extends View {
         }else{
             tempMatrix.preScale(mScaleFactor,mScaleFactor);
             tempMatrix.preTranslate(mBaseTranslateX,mBaseTranslateY);
-
         }
         canvas.concat(tempMatrix);
         drawScreen(canvas);
@@ -493,6 +498,17 @@ public class SeatPicker extends View {
         scaleGestureDetector.onTouchEvent(event);
 
 
+        switch (event.getAction()){
+            case MotionEvent.ACTION_DOWN:
+                break;
+            case MotionEvent.ACTION_MOVE:
+                break;
+            case MotionEvent.ACTION_UP:
+                autoScale();
+                autoScroll();
+                break;
+        }
+
         return true;
     }
 
@@ -549,7 +565,8 @@ public class SeatPicker extends View {
 
             @Override
             public boolean onDoubleTap(MotionEvent e) {
-                reset();
+//                reset();
+                initAnimation();
                 return super.onDoubleTap(e);
             }
         });
@@ -559,10 +576,6 @@ public class SeatPicker extends View {
             public boolean onScale(ScaleGestureDetector detector) {
                 float scaleFactor = detector.getScaleFactor();
                 mScaleFactor *= scaleFactor;
-                if (mScaleFactor >= mMaxScale || scaleFactor >= mMaxScale)
-                    mScaleFactor = mMaxScale; scaleFactor = mMaxScale;
-                if (mScaleFactor <= mMinScale || scaleFactor <= mMinScale)
-                    mScaleFactor = mMinScale; scaleFactor = mMinScale;
                 float fx = detector.getFocusX();
                 float fy = detector.getFocusY();
                 tempMatrix.reset();
@@ -572,6 +585,111 @@ public class SeatPicker extends View {
             }
         });
 
+    }
+
+    float tempScaleFactor = 1.0f;
+    private void autoScale() {
+        if (mScaleFactor >= mMaxScale){
+            tempScaleFactor = mScaleFactor;
+            mScaleFactor = mMaxScale;
+            zoomAnimate(tempScaleFactor, mMaxScale);
+        } else if (mScaleFactor <= mMinScale) {
+            tempScaleFactor = mScaleFactor;
+            mScaleFactor = mMinScale;
+            zoomAnimate(tempScaleFactor, mMinScale);
+        }
+    }
+
+    private void autoScroll(){
+        Point start = new Point();
+        start.x = (int) mBaseTranslateX;
+        start.y = (int) mBaseTranslateY;
+        Point end = new Point();
+        end.x = 0;
+        end.y = 0;
+        int width = getWidth();
+        int height = getHeight();
+        moveAnimate(start,end);
+    }
+
+
+    class MoveEvaluator implements TypeEvaluator {
+
+        @Override
+        public Object evaluate(float fraction, Object startValue, Object endValue) {
+            Point startPoint = (Point) startValue;
+            Point endPoint = (Point) endValue;
+            int x = (int) (startPoint.x + fraction * (endPoint.x - startPoint.x));
+            int y = (int) (startPoint.y + fraction * (endPoint.y - startPoint.y));
+            return new Point(x, y);
+        }
+    }
+
+    private void moveAnimate(Point start, Point end) {
+        ValueAnimator valueAnimator = ValueAnimator.ofObject(new MoveEvaluator(), start, end);
+        valueAnimator.setInterpolator(new DecelerateInterpolator());
+        MoveAnimation moveAnimation = new MoveAnimation();
+        valueAnimator.addUpdateListener(moveAnimation);
+        valueAnimator.setDuration(1000);
+        valueAnimator.start();
+    }
+
+    private void zoomAnimate(float cur, float tar) {
+        ValueAnimator valueAnimator = ValueAnimator.ofFloat(cur, tar);
+        valueAnimator.setInterpolator(new DecelerateInterpolator());
+        ZoomAnimation zoomAnim = new ZoomAnimation();
+        valueAnimator.addUpdateListener(zoomAnim);
+        valueAnimator.addListener(zoomAnim);
+        valueAnimator.setDuration(1000);
+        valueAnimator.start();
+    }
+
+    float zoom;
+    class ZoomAnimation implements ValueAnimator.AnimatorUpdateListener, Animator.AnimatorListener {
+
+        @Override
+        public void onAnimationUpdate(ValueAnimator animation) {
+            zoom = (Float) animation.getAnimatedValue();
+            mScaleFactor = zoom;
+            invalidate();
+        }
+
+        @Override
+        public void onAnimationCancel(Animator animation) {
+        }
+
+        @Override
+        public void onAnimationEnd(Animator animation) {
+        }
+
+        @Override
+        public void onAnimationRepeat(Animator animation) {
+        }
+
+        @Override
+        public void onAnimationStart(Animator animation) {
+        }
+
+    }
+
+    class MoveAnimation implements ValueAnimator.AnimatorUpdateListener {
+
+        @Override
+        public void onAnimationUpdate(ValueAnimator animation) {
+            Point p = (Point) animation.getAnimatedValue();
+            Log.d("TAG-Point",p.x + " , "+p.y);
+            mBaseTranslateX = p.x;
+            mBaseTranslateY = p.y;
+            invalidate();
+        }
+
+    }
+
+
+    private void initAnimation(){
+        ObjectAnimator anim = ObjectAnimator.ofFloat(this, "rotation", 0f, 360f);
+        anim.setDuration(1000);
+        anim.start();
     }
 
     private void reset(){
@@ -648,11 +766,11 @@ public class SeatPicker extends View {
     /**
      * Maximum scale factor
      */
-    private float mMaxScale = 2.5f;
+    private float mMaxScale = 2.0f;
     /**
      * Minimum scale factor
      */
-    private float mMinScale = 0.5f;
+    private float mMinScale = 0.7f;
 
     private SeatClassifier seatClassifier;
     public interface SeatClassifier {
