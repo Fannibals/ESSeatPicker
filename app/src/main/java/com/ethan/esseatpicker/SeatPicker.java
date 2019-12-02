@@ -490,9 +490,13 @@ public class SeatPicker extends View {
     }
 
 
+    private float lengthX = 0;
+    private float downX, downY;
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         // get the x,y corresponding to the content view
+        float y = event.getY();
+        float x = event.getX();
         super.onTouchEvent(event);
         gestureDetector.onTouchEvent(event);
         scaleGestureDetector.onTouchEvent(event);
@@ -500,12 +504,16 @@ public class SeatPicker extends View {
 
         switch (event.getAction()){
             case MotionEvent.ACTION_DOWN:
+                downX = event.getX();
                 break;
             case MotionEvent.ACTION_MOVE:
                 break;
             case MotionEvent.ACTION_UP:
                 autoScale();
-                autoScroll();
+                lengthX = x - downX;
+                if ((downX > 20 || downX < -20)) {
+                    autoScroll();
+                }
                 break;
         }
 
@@ -609,7 +617,26 @@ public class SeatPicker extends View {
         end.y = 0;
         int width = getWidth();
         int height = getHeight();
+        float leftMargin = (50 + spacing *2)*mScaleFactor;
+        float seatWidth = seatBitmapWidth * mScaleFactor;
+        float xDiff = seatWidth + leftMargin - width;
+        if (xDiff > 0){
+            // 需要向右弹的情况
+            if (mBaseTranslateX*mScaleFactor + xDiff < 0) {
+                end.x = (int)-xDiff;
+            }else if (mBaseTranslateX > xDiff){
+                end.x = 0;
+            } else if (Math.abs(lengthX) < Math.abs(xDiff) ){
+                end.x = (int) (mBaseTranslateX + lengthX);
+                // lengthX < 0 ==> left; lengthX > 0 ==> right
+            }else{
+                end.x = 0;
+            }
+
+        }
         moveAnimate(start,end);
+
+
     }
 
 
