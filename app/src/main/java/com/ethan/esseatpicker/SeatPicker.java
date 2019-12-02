@@ -632,7 +632,6 @@ public class SeatPicker extends View {
             }else{
                 end.x = 0;
             }
-
         }
         moveAnimate(start,end);
 
