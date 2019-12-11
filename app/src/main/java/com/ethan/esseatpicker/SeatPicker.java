@@ -289,28 +289,29 @@ public class SeatPicker extends View {
         super.onLayout(changed, left, top, right, bottom);
     }
 
+    //TODO：RESET
     @Override
     protected void onDraw(Canvas canvas) {
 //        super.onDraw(canvas);
         if (headBitmap == null) {
             headBitmap= drawTopPart();
         }
+        Log.d("afterTopPart",tempMatrix.toString());
         // draw the head top
         canvas.drawBitmap(headBitmap,0,0,null);
         drawThumbNail(canvas);
-        tempMatrix.reset();
-        if (selected){
-            focusToSelectedSeat();
-        }else{
-            tempMatrix.preScale(mScaleFactor,mScaleFactor);
-            tempMatrix.preTranslate(mBaseTranslateX,mBaseTranslateY);
-        }
-        canvas.concat(tempMatrix);
+
+//        tempMatrix.reset();
+//        if (selected){
+//            focusToSelectedSeat();
+//        }else{
+//            tempMatrix.preScale(mScaleFactor,mScaleFactor);
+//            tempMatrix.preTranslate(mBaseTranslateX,mBaseTranslateY);
+//        }
+//        canvas.concat(tempMatrix);
         drawScreen(canvas);
         drawSeat(canvas);
         drawNumber(canvas);
-
-
     }
     Paint pathPaint;
     String screenName;
@@ -322,14 +323,17 @@ public class SeatPicker extends View {
     private void drawScreen(Canvas canvas){
         //TODO: Look at Path
         float startY = headHeight;
-        float centerX = leftMargin + (seatBitmapWidth)/ 2f;
+        float centerX = ((leftMargin + seatBitmapWidth + mBaseTranslateX)*mScaleFactor)/ 2f;
 
         Path path = new Path();
         path.moveTo(centerX,startY);
-        float screenWidth = seatBitmapWidth*0.6f;
-        path.lineTo(centerX - screenWidth / 2, startY);
-        path.lineTo(centerX - screenWidth / 2 + screenHeight / 2, startY+ screenHeight);
-        path.lineTo(centerX + screenWidth / 2 - screenHeight / 2, startY+ screenHeight);
+        float screenWidth = seatBitmapWidth*0.6f*mScaleFactor;
+        // height's scale factor here is half of mScaleFactor, for good looking : )
+        path.lineTo(centerX - screenWidth / 2 , startY);
+        path.lineTo(centerX - screenWidth / 2 + screenHeight *(mScaleFactor / 2),
+                startY+ screenHeight *mScaleFactor);
+        path.lineTo(centerX + screenWidth / 2 - screenHeight *(mScaleFactor / 2),
+                startY+ screenHeight * mScaleFactor);
         path.lineTo(centerX + screenWidth / 2, startY);
 
         pathPaint.setColor(Color.parseColor("#e2e2e2"));
@@ -384,30 +388,55 @@ public class SeatPicker extends View {
 
     Paint lineNumberPaint;
     /**
-     * left margin for line numbers
+     * left margin for line numbers, also for x
      */
     float leftMargin = 50;
     ArrayList<String> lineNumbers = new ArrayList<>();
     private void drawNumber(Canvas canvas){
         //TODO: 没想好x怎么算
-        float x = leftMargin;
-        float startY = headHeight + screenHeight + x + defaultImgH; // defaultImgH is necessary
+        lineNumberPaint.setTextSize(dip2Px(16)*mScaleFactor);
+        float x = leftMargin * mScaleFactor + mBaseTranslateX ;
+        float startY = (headHeight + screenHeight + leftMargin +defaultImgH)*mScaleFactor + mBaseTranslateY; // defaultImgH is necessary
+        Log.d("number-StartY",mScaleFactor + " , "+ startY);
+        Log.d("number-StartY-headHeight",headHeight+"");
+        Log.d("number-StartY-screenHeight",screenHeight+"");
+        Log.d("number-StartY-x",x+"");
+        Log.d("number-StartY-mBaseY",mBaseTranslateY+"");
+
         for (String line:lineNumbers) {
             // arg x and y here are relative to text's baseline
-            canvas.drawText(line,x,startY+ (verSpacing+ lineNumberTxtHeight)*lineNumbers.indexOf(line),lineNumberPaint);
+            canvas.drawText(line,x,startY+ mScaleFactor* (verSpacing+ defaultImgH)*lineNumbers.indexOf(line),lineNumberPaint);
         }
     }
 
     private void drawSeat(Canvas canvas){
+
         for (int i = 0; i < row; i++) {
-            float top = i* seatHeight+ i * verSpacing + (headHeight + screenHeight + 50);
+            //TODO: trans test
+            float top = i* seatHeight+ i * verSpacing + (headHeight + screenHeight + leftMargin);
+            top *= mScaleFactor;
+            top += mBaseTranslateY;
+            if (i == 0){
+                Log.d("number-top",mScaleFactor + " , "+top);
+                Log.d("number-top-seatHeight",seatHeight+"");
+                Log.d("number-top-verSpacing",verSpacing+"");
+                Log.d("number-top-headHeight" ,headHeight+"");
+                Log.d("number-top-screenHeight",screenHeight+"");
+                Log.d("number-top-x",leftMargin+"");
+                Log.d("number-top-mBaseY",mBaseTranslateY+"");
+
+            }
+
             if (top > getHeight()) continue;
 
             for (int j = 0; j < column; j++) {
                 float left = j*(seatWidth + spacing)+(50 + spacing*2);
+                left *= mScaleFactor;
+                left += mBaseTranslateX;
                 if (left > getWidth()) continue;
                 tempMatrix.setTranslate(left,top);
-                tempMatrix.postScale(xScale1,yScale1,left,top);
+                tempMatrix.preScale(xScale1,yScale1);
+                tempMatrix.preScale(mScaleFactor,mScaleFactor);
 
                 int seatType = getSeatType(i,j);
                 switch (seatType){
@@ -423,7 +452,6 @@ public class SeatPicker extends View {
                     case SEAT_TYPE_NOT_AVAILABLE:
                         break;
                 }
-
             }
         }
     }
@@ -509,10 +537,10 @@ public class SeatPicker extends View {
             case MotionEvent.ACTION_MOVE:
                 break;
             case MotionEvent.ACTION_UP:
-                autoScale();
+//                autoScale();
                 lengthX = x - downX;
                 if ((downX > 20 || downX < -20)) {
-                    autoScroll();
+//                    autoScroll();
                 }
                 break;
         }
@@ -586,7 +614,7 @@ public class SeatPicker extends View {
                 mScaleFactor *= scaleFactor;
                 float fx = detector.getFocusX();
                 float fy = detector.getFocusY();
-                tempMatrix.reset();
+//                tempMatrix.reset();
                 tempMatrix.preScale(scaleFactor, scaleFactor,fx,fy);
                 invalidate();
                 return true;
@@ -731,10 +759,17 @@ public class SeatPicker extends View {
     float lastX = 0;
     float lastY = 0;
     private void focusToSelectedSeat(){
+        float lastScale = mScaleFactor;
+        Point lastPoint = new Point((int)mBaseTranslateX,(int)mBaseTranslateY);
         if (mScaleFactor <= 1.5f) mScaleFactor = 1.5f;
         distanceToCenter();
-        tempMatrix.preScale(mScaleFactor,mScaleFactor);
-        tempMatrix.preTranslate(mBaseTranslateX,mBaseTranslateY);
+//        if (lastScale != mScaleFactor){
+//            zoomAnimate(lastScale,mScaleFactor);
+//        }
+        moveAnimate(lastPoint,new Point((int)mBaseTranslateX,(int)mBaseTranslateY));
+//
+//        tempMatrix.preScale(mScaleFactor,mScaleFactor);
+//        tempMatrix.preTranslate(mBaseTranslateX,mBaseTranslateY);
         selected = false;
         getWidth();
     }
@@ -784,7 +819,25 @@ public class SeatPicker extends View {
     }
 
     float[] m = new float[9];
-    Matrix matrix = new Matrix();
+    private float getTranslateX() {
+        tempMatrix.getValues(m);
+        return m[2];
+    }
+
+    private float getTranslateY() {
+        tempMatrix.getValues(m);
+        return m[5];
+    }
+
+    private float getMatrixScaleY() {
+        tempMatrix.getValues(m);
+        return m[4];
+    }
+
+    private float getMatrixScaleX() {
+        tempMatrix.getValues(m);
+        return m[Matrix.MSCALE_X];
+    }
 
     private float mBaseTranslateX = 0;
     private float mBaseTranslateY = 0;
