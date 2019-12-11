@@ -594,7 +594,7 @@ public class SeatPicker extends View {
                 float scale = mScaleFactor;
                 mBaseTranslateX += -distanceX / scale;
                 mBaseTranslateY += -distanceY / scale;
-                tempMatrix.postTranslate(mBaseTranslateX,mBaseTranslateY);
+                tempMatrix.preTranslate(mBaseTranslateX,mBaseTranslateY);
                 invalidate();
                 return true;
             }
@@ -662,7 +662,6 @@ public class SeatPicker extends View {
             }
         }
         moveAnimate(start,end);
-
 
     }
 
@@ -791,8 +790,8 @@ public class SeatPicker extends View {
 
 
     private int[] getSeatID(int x, int y){
-        float top = (seatBaseM[0] + mBaseTranslateY)*mScaleFactor;
-        float left = (seatBaseM[2] + mBaseTranslateX)*mScaleFactor;
+        float top = (seatBaseM[0] )*mScaleFactor + mBaseTranslateY;
+        float left = (seatBaseM[2] )*mScaleFactor + mBaseTranslateX;
 
         int tempColumn = (int)((x - left) / ((seatWidth+spacing)*mScaleFactor));
         int tempRow = (int)((y - top) / ((seatHeight+verSpacing)*mScaleFactor));
