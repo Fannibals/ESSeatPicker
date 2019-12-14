@@ -537,10 +537,10 @@ public class SeatPicker extends View {
             case MotionEvent.ACTION_MOVE:
                 break;
             case MotionEvent.ACTION_UP:
-//                autoScale();
+                autoScale();
                 lengthX = x - downX;
-                if ((downX > 20 || downX < -20)) {
-//                    autoScroll();
+                if ((downX > 30 || downX < -30)) {
+                    autoScroll();
                 }
                 break;
         }
@@ -636,6 +636,7 @@ public class SeatPicker extends View {
         }
     }
 
+    
     private void autoScroll(){
         Point start = new Point();
         start.x = (int) mBaseTranslateX;
@@ -647,18 +648,28 @@ public class SeatPicker extends View {
         int height = getHeight();
         float leftMargin = (50 + spacing *2)*mScaleFactor;
         float seatWidth = seatBitmapWidth * mScaleFactor;
+        float topMargin =headHeight + (screenHeight + leftMargin) * mScaleFactor;
         float xDiff = seatWidth + leftMargin - width;
+        float yDiff = seatBitmapHeight * mScaleFactor + topMargin - height;
         if (xDiff > 0){
-            // 需要向右弹的情况
-            if (mBaseTranslateX*mScaleFactor + xDiff < 0) {
-                end.x = (int)-xDiff;
-            }else if (mBaseTranslateX > xDiff){
+            if (mBaseTranslateX >= 0) {
                 end.x = 0;
-            } else if (Math.abs(lengthX) < Math.abs(xDiff) ){
-                end.x = (int) (mBaseTranslateX + lengthX);
-                // lengthX < 0 ==> left; lengthX > 0 ==> right
             }else{
-                end.x = 0;
+                if (-mBaseTranslateX > xDiff) {
+                    end.x = (int)-xDiff - spacing;
+                }else{
+                    end.x = start.x;
+                }
+            }
+        }
+
+        if (yDiff > 0) {
+            if (mBaseTranslateY >=0){
+                end.y = 0;
+            }else{
+                if (-mBaseTranslateY > yDiff)
+                    end.y = (int)-yDiff - verSpacing;
+                else end.y = start.y;
             }
         }
         moveAnimate(start,end);
@@ -790,12 +801,15 @@ public class SeatPicker extends View {
 
 
     private int[] getSeatID(int x, int y){
-        float top = (seatBaseM[0] )*mScaleFactor + mBaseTranslateY;
-        float left = (seatBaseM[2] )*mScaleFactor + mBaseTranslateX;
+        // first of all, calculate the base coordinate
+        float top = (seatBaseM[0]) * mScaleFactor + mBaseTranslateY;
+        float left = (seatBaseM[2] ) * mScaleFactor + mBaseTranslateX;
 
+        // then, calculate the row and column
         int tempColumn = (int)((x - left) / ((seatWidth+spacing)*mScaleFactor));
         int tempRow = (int)((y - top) / ((seatHeight+verSpacing)*mScaleFactor));
 
+        // calculate if it is in the round of the seat
         float xMax = left + (++tempColumn) * (seatWidth+spacing)*mScaleFactor - spacing*mScaleFactor;
         float yMax = top +  (++tempRow)* (seatHeight+verSpacing)*mScaleFactor - verSpacing*mScaleFactor;
         if (x > xMax || y > yMax || tempRow > this.row
