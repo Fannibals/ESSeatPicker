@@ -289,7 +289,7 @@ public class SeatPicker extends View {
         super.onLayout(changed, left, top, right, bottom);
     }
 
-    //TODO：RESET
+    //TODO：RESET , refresh only needed rather than all
     @Override
     protected void onDraw(Canvas canvas) {
 //        super.onDraw(canvas);
@@ -300,15 +300,9 @@ public class SeatPicker extends View {
         // draw the head top
         canvas.drawBitmap(headBitmap,0,0,null);
         drawThumbNail(canvas);
-
-//        tempMatrix.reset();
-//        if (selected){
-//            focusToSelectedSeat();
-//        }else{
-//            tempMatrix.preScale(mScaleFactor,mScaleFactor);
-//            tempMatrix.preTranslate(mBaseTranslateX,mBaseTranslateY);
-//        }
-//        canvas.concat(tempMatrix);
+        if (selected){
+            focusToSelectedSeat();
+        }
         drawScreen(canvas);
         drawSeat(canvas);
         drawNumber(canvas);
@@ -522,13 +516,13 @@ public class SeatPicker extends View {
     private float downX, downY;
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+        Log.d("DBG","onTouchEvent");
         // get the x,y corresponding to the content view
         float y = event.getY();
         float x = event.getX();
-        super.onTouchEvent(event);
+//        super.onTouchEvent(event);
         gestureDetector.onTouchEvent(event);
         scaleGestureDetector.onTouchEvent(event);
-
 
         switch (event.getAction()){
             case MotionEvent.ACTION_DOWN:
@@ -539,7 +533,7 @@ public class SeatPicker extends View {
             case MotionEvent.ACTION_UP:
                 autoScale();
                 lengthX = x - downX;
-                if ((downX > 30 || downX < -30)) {
+                if ((lengthX > 30 || lengthX < -30)) {
                     autoScroll();
                 }
                 break;
@@ -557,6 +551,7 @@ public class SeatPicker extends View {
         gestureDetector = new GestureDetector(getContext(), new GestureDetector.SimpleOnGestureListener(){
             @Override
             public boolean onSingleTapConfirmed(MotionEvent e) {
+                Log.d("DBG","onSingleTapConfirmed");
                 int y = (int) e.getY();
                 int x = (int) e.getX();
                 int[] seat = getSeatID(x,y);
@@ -636,8 +631,9 @@ public class SeatPicker extends View {
         }
     }
 
-    
+
     private void autoScroll(){
+        Log.d("DBG","autoScroll");
         Point start = new Point();
         start.x = (int) mBaseTranslateX;
         start.y = (int) mBaseTranslateY;
@@ -769,19 +765,16 @@ public class SeatPicker extends View {
     float lastX = 0;
     float lastY = 0;
     private void focusToSelectedSeat(){
+        Log.d("DBG","focusToSelectedSeat");
         float lastScale = mScaleFactor;
         Point lastPoint = new Point((int)mBaseTranslateX,(int)mBaseTranslateY);
         if (mScaleFactor <= 1.5f) mScaleFactor = 1.5f;
         distanceToCenter();
-//        if (lastScale != mScaleFactor){
-//            zoomAnimate(lastScale,mScaleFactor);
-//        }
+        if (lastScale != mScaleFactor){
+            zoomAnimate(lastScale,mScaleFactor);
+        }
         moveAnimate(lastPoint,new Point((int)mBaseTranslateX,(int)mBaseTranslateY));
-//
-//        tempMatrix.preScale(mScaleFactor,mScaleFactor);
-//        tempMatrix.preTranslate(mBaseTranslateX,mBaseTranslateY);
         selected = false;
-        getWidth();
     }
 
     private void distanceToCenter() {

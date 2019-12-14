@@ -6,8 +6,8 @@
     </shared>
   </component>
   <component name="AndroidLogFilters">
-    <option name="TOOL_WINDOW_CUSTOM_FILTER" value="number-" />
-    <option name="TOOL_WINDOW_LOG_LEVEL" value="verbose" />
+    <option name="TOOL_WINDOW_CUSTOM_FILTER" value="DBG" />
+    <option name="TOOL_WINDOW_LOG_LEVEL" value="debug" />
     <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="Show only selected application" />
   </component>
   <component name="ChangeListManager">
@@ -52,11 +52,104 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/ethan/esseatpicker/SeatPicker.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="337">
-              <caret line="660" column="17" lean-forward="true" selection-start-line="660" selection-start-column="17" selection-end-line="660" selection-end-column="17" />
+            <state relative-caret-position="188">
+              <caret line="536" column="41" lean-forward="true" selection-start-line="536" selection-start-column="41" selection-end-line="536" selection-end-column="41" />
               <folding>
-                <element signature="e#19495#20037#0" expanded="true" />
-                <element signature="e#20036#20037#0" expanded="true" />
+                <element signature="e#1079#1211#0" />
+                <element signature="e#1217#1352#0" />
+                <element signature="e#1358#1523#0" />
+                <element signature="e#1530#1558#0" />
+                <element signature="e#1630#1659#0" />
+                <element signature="e#1716#1739#0" />
+                <element signature="e#1794#1819#0" />
+                <element signature="e#1878#1901#0" />
+                <element signature="e#1961#1985#0" />
+                <element signature="e#2049#2084#0" />
+                <element signature="e#2193#2240#0" />
+                <element signature="e#2269#2314#0" />
+                <element signature="e#2351#2392#0" />
+                <element signature="e#2425#2467#0" />
+                <element signature="e#2500#2558#0" />
+                <element signature="e#2600#2627#0" />
+                <element signature="e#2669#2695#0" />
+                <element signature="e#2728#2754#0" />
+                <element signature="e#2788#2815#0" />
+                <element signature="e#2846#2873#0" />
+                <element signature="e#2905#2930#0" />
+                <element signature="e#2953#2978#0" />
+                <element signature="e#3004#3032#0" />
+                <element signature="e#3060#3089#0" />
+                <element signature="e#3116#3146#0" />
+                <element signature="e#3179#3209#0" />
+                <element signature="e#3245#3270#0" />
+                <element signature="e#3306#3333#0" />
+                <element signature="e#3356#3383#0" />
+                <element signature="e#3406#3459#0" />
+                <element signature="e#3546#4076#0" />
+                <element signature="e#4249#6822#0" />
+                <element signature="e#6755#6816#1" />
+                <element signature="e#6828#6946#0" />
+                <element signature="e#6952#7105#0" />
+                <element signature="e#7111#7274#0" />
+                <element signature="e#8197#8242#1" />
+                <element signature="e#8249#9520#0" />
+                <element signature="e#9092#9425#1" />
+                <element signature="e#9574#10982#0" />
+                <element signature="e#9838#10887#1" />
+                <element signature="e#10025#10877#1" />
+                <element signature="e#10257#10769#0" />
+                <element signature="e#10927#10986#0" />
+                <element signature="e#11162#12012#0" />
+                <element signature="e#11715#11917#1" />
+                <element signature="e#12018#13906#0" />
+                <element signature="e#12006#13811#1" />
+                <element signature="e#12229#12676#1" />
+                <element signature="e#12769#13801#1" />
+                <element signature="e#13222#13787#0" />
+                <element signature="e#13912#14396#0" />
+                <element signature="e#13952#14002#1" />
+                <element signature="e#14040#14265#1" />
+                <element signature="e#14094#14157#1" />
+                <element signature="e#14201#14255#1" />
+                <element signature="e#14529#16240#0" />
+                <element signature="method#onScroll#0;class#17264:19422" />
+                <element signature="method#onDoubleTap#0;class#17264:19422" />
+                <element signature="e#21111#21399#1" />
+                <element signature="e#21151#21193#1" />
+                <element signature="e#21197#21389#1" />
+                <element signature="e#21549#21597#1" />
+                <element signature="e#21593#21639#1" />
+                <element signature="e#21415#21536#1" />
+                <element signature="e#21462#21500#1" />
+                <element signature="e#21508#21662#1" />
+                <element signature="e#21464#21930#0" />
+                <element signature="e#21520#21924#0" />
+                <element signature="e#22291#22698#0" />
+                <element signature="e#22704#23120#0" />
+                <element signature="e#22787#23452#0" />
+                <element signature="e#22893#23093#0" />
+                <element signature="e#23103#23182#0" />
+                <element signature="e#23192#23268#0" />
+                <element signature="e#23278#23357#0" />
+                <element signature="e#23367#23445#0" />
+                <element signature="e#23458#23832#0" />
+                <element signature="e#23537#23825#0" />
+                <element signature="e#24194#24365#0" />
+                <element signature="e#24371#24532#0" />
+                <element signature="e#25234#25304#0" />
+                <element signature="e#25666#26588#0" />
+                <element signature="e#25979#26015#1" />
+                <element signature="e#26174#26248#0" />
+                <element signature="e#26770#27000#0" />
+                <element signature="e#27036#27127#0" />
+                <element signature="e#27133#27224#0" />
+                <element signature="e#27230#27323#0" />
+                <element signature="e#27329#27436#0" />
+                <element signature="e#27040#27079#0" />
+                <element signature="e#27120#27159#0" />
+                <element signature="e#27523#27744#0" />
+                <element signature="e#27987#28100#0" />
+                <element signature="e#28149#28196#1" />
               </folding>
             </state>
           </provider>
@@ -109,9 +202,9 @@
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="293" />
+    <option name="x" value="337" />
     <option name="y" value="23" />
-    <option name="width" value="1147" />
+    <option name="width" value="1251" />
     <option name="height" value="807" />
   </component>
   <component name="ProjectLevelVcsManager">
@@ -232,12 +325,12 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="293" y="23" width="1147" height="807" extended-state="0" />
+    <frame x="337" y="23" width="1251" height="807" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info id="Captures" order="0" sideWeight="0.5100334" side_tool="true" visible="true" weight="0.160181" />
-      <window_info active="true" content_ui="combo" id="Project" order="1" sideWeight="0.48996654" visible="true" weight="0.160181" />
-      <window_info id="Structure" order="2" sideWeight="0.5100334" side_tool="true" weight="0.160181" />
+      <window_info id="Captures" order="0" sideWeight="0.5100334" side_tool="true" weight="0.160181" />
+      <window_info content_ui="combo" id="Project" order="1" sideWeight="0.3359375" visible="true" weight="0.191067" />
+      <window_info id="Structure" order="2" sideWeight="0.6640625" side_tool="true" visible="true" weight="0.191067" />
       <window_info id="Build Variants" order="3" sideWeight="0.5062937" side_tool="true" weight="0.29615745" />
       <window_info id="Image Layers" order="4" />
       <window_info id="Designer" order="5" />
@@ -245,10 +338,10 @@
       <window_info id="Capture Tool" order="7" />
       <window_info id="Favorites" order="8" side_tool="true" />
       <window_info anchor="bottom" id="Run" order="0" sideWeight="0.49924698" weight="0.3146853" />
-      <window_info anchor="bottom" id="Logcat" order="1" weight="0.5048951" />
+      <window_info active="true" anchor="bottom" id="Logcat" order="1" visible="true" weight="0.2839161" />
       <window_info anchor="bottom" id="TODO" order="2" />
       <window_info anchor="bottom" id="Android Profiler" order="3" weight="0.579021" />
-      <window_info anchor="bottom" id="Debug" order="4" sideWeight="0.49924698" visible="true" weight="0.16363636" />
+      <window_info anchor="bottom" id="Debug" order="4" sideWeight="0.49924698" weight="0.18461539" />
       <window_info anchor="bottom" id="Terminal" order="5" weight="0.3286517" />
       <window_info anchor="bottom" id="Event Log" order="6" sideWeight="0.500753" side_tool="true" weight="0.47132868" />
       <window_info anchor="bottom" id="Flutter Performance" order="7" side_tool="true" />
@@ -297,23 +390,33 @@
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
+        <line-breakpoint enabled="true" type="java-method">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/ethan/esseatpicker/SeatPicker.java</url>
-          <line>799</line>
-          <properties />
-          <option name="timeStamp" value="1" />
+          <line>561</line>
+          <properties method="onSingleTapConfirmed" />
+          <option name="timeStamp" value="10" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-method">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/ethan/esseatpicker/SeatPicker.java</url>
-          <line>611</line>
-          <properties method="onScale" />
-          <option name="timeStamp" value="4" />
+          <line>526</line>
+          <properties class="com.ethan.esseatpicker.SeatPicker" method="onTouchEvent" />
+          <option name="timeStamp" value="13" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
+    <watches-manager>
+      <configuration name="app">
+        <watch expression="selected" language="JAVA" />
+      </configuration>
+    </watches-manager>
   </component>
   <component name="debuggerHistoryManager">
     <expressions id="watch">
+      <expression>
+        <expression-string>selected</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
       <expression>
         <expression-string>x / 2</expression-string>
         <language-id>JAVA</language-id>
@@ -347,9 +450,6 @@
     </expressions>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/drawable-v24/loveseat_selected.png">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
     <entry file="file://$USER_HOME$/Library/Android/sdk/sources/android-29/org/xmlpull/v1/XmlPullParser.java" />
     <entry file="file://$USER_HOME$/Library/Android/sdk/sources/android-29/android/util/AttributeSet.java" />
     <entry file="file://$USER_HOME$/Library/Android/sdk/sources/android-29/android/content/res/TypedArray.java" />
@@ -411,17 +511,6 @@
     <entry file="file://$PROJECT_DIR$/app/build.gradle">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-167" />
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/Library/Android/sdk/sources/android-29/android/view/GestureDetector.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="228">
-          <caret line="195" column="23" selection-start-line="195" selection-start-column="23" selection-end-line="195" selection-end-column="23" />
-          <folding>
-            <element signature="e#8985#8986#0" expanded="true" />
-            <element signature="e#9021#9022#0" expanded="true" />
-          </folding>
-        </state>
       </provider>
     </entry>
     <entry file="file://$USER_HOME$/Library/Android/sdk/sources/android-29/android/view/MotionEvent.java">
@@ -966,10 +1055,17 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$USER_HOME$/Library/Android/sdk/sources/android-24/android/view/View.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="156">
+          <caret line="17073" selection-start-line="17073" selection-end-line="17073" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$USER_HOME$/Library/Android/sdk/sources/android-29/android/view/View.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="285">
-          <caret line="15533" column="21" selection-start-line="15533" selection-start-column="21" selection-end-line="15533" selection-end-column="21" />
+        <state relative-caret-position="-2358">
+          <caret line="14753" column="19" selection-start-line="14753" selection-start-column="19" selection-end-line="14753" selection-end-column="19" />
           <folding>
             <element signature="e#576476#576477#0" expanded="true" />
             <element signature="e#576507#576508#0" expanded="true" />
@@ -985,13 +1081,117 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$USER_HOME$/Library/Android/sdk/sources/android-29/android/view/GestureDetector.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="161">
+          <caret line="512" column="19" selection-start-line="512" selection-start-column="19" selection-end-line="512" selection-end-column="19" />
+          <folding>
+            <element signature="e#8985#8986#0" expanded="true" />
+            <element signature="e#9021#9022#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/ethan/esseatpicker/SeatPicker.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="337">
-          <caret line="660" column="17" lean-forward="true" selection-start-line="660" selection-start-column="17" selection-end-line="660" selection-end-column="17" />
+        <state relative-caret-position="188">
+          <caret line="536" column="41" lean-forward="true" selection-start-line="536" selection-start-column="41" selection-end-line="536" selection-end-column="41" />
           <folding>
-            <element signature="e#19495#20037#0" expanded="true" />
-            <element signature="e#20036#20037#0" expanded="true" />
+            <element signature="e#1079#1211#0" />
+            <element signature="e#1217#1352#0" />
+            <element signature="e#1358#1523#0" />
+            <element signature="e#1530#1558#0" />
+            <element signature="e#1630#1659#0" />
+            <element signature="e#1716#1739#0" />
+            <element signature="e#1794#1819#0" />
+            <element signature="e#1878#1901#0" />
+            <element signature="e#1961#1985#0" />
+            <element signature="e#2049#2084#0" />
+            <element signature="e#2193#2240#0" />
+            <element signature="e#2269#2314#0" />
+            <element signature="e#2351#2392#0" />
+            <element signature="e#2425#2467#0" />
+            <element signature="e#2500#2558#0" />
+            <element signature="e#2600#2627#0" />
+            <element signature="e#2669#2695#0" />
+            <element signature="e#2728#2754#0" />
+            <element signature="e#2788#2815#0" />
+            <element signature="e#2846#2873#0" />
+            <element signature="e#2905#2930#0" />
+            <element signature="e#2953#2978#0" />
+            <element signature="e#3004#3032#0" />
+            <element signature="e#3060#3089#0" />
+            <element signature="e#3116#3146#0" />
+            <element signature="e#3179#3209#0" />
+            <element signature="e#3245#3270#0" />
+            <element signature="e#3306#3333#0" />
+            <element signature="e#3356#3383#0" />
+            <element signature="e#3406#3459#0" />
+            <element signature="e#3546#4076#0" />
+            <element signature="e#4249#6822#0" />
+            <element signature="e#6755#6816#1" />
+            <element signature="e#6828#6946#0" />
+            <element signature="e#6952#7105#0" />
+            <element signature="e#7111#7274#0" />
+            <element signature="e#8197#8242#1" />
+            <element signature="e#8249#9520#0" />
+            <element signature="e#9092#9425#1" />
+            <element signature="e#9574#10982#0" />
+            <element signature="e#9838#10887#1" />
+            <element signature="e#10025#10877#1" />
+            <element signature="e#10257#10769#0" />
+            <element signature="e#10927#10986#0" />
+            <element signature="e#11162#12012#0" />
+            <element signature="e#11715#11917#1" />
+            <element signature="e#12018#13906#0" />
+            <element signature="e#12006#13811#1" />
+            <element signature="e#12229#12676#1" />
+            <element signature="e#12769#13801#1" />
+            <element signature="e#13222#13787#0" />
+            <element signature="e#13912#14396#0" />
+            <element signature="e#13952#14002#1" />
+            <element signature="e#14040#14265#1" />
+            <element signature="e#14094#14157#1" />
+            <element signature="e#14201#14255#1" />
+            <element signature="e#14529#16240#0" />
+            <element signature="method#onScroll#0;class#17264:19422" />
+            <element signature="method#onDoubleTap#0;class#17264:19422" />
+            <element signature="e#21111#21399#1" />
+            <element signature="e#21151#21193#1" />
+            <element signature="e#21197#21389#1" />
+            <element signature="e#21549#21597#1" />
+            <element signature="e#21593#21639#1" />
+            <element signature="e#21415#21536#1" />
+            <element signature="e#21462#21500#1" />
+            <element signature="e#21508#21662#1" />
+            <element signature="e#21464#21930#0" />
+            <element signature="e#21520#21924#0" />
+            <element signature="e#22291#22698#0" />
+            <element signature="e#22704#23120#0" />
+            <element signature="e#22787#23452#0" />
+            <element signature="e#22893#23093#0" />
+            <element signature="e#23103#23182#0" />
+            <element signature="e#23192#23268#0" />
+            <element signature="e#23278#23357#0" />
+            <element signature="e#23367#23445#0" />
+            <element signature="e#23458#23832#0" />
+            <element signature="e#23537#23825#0" />
+            <element signature="e#24194#24365#0" />
+            <element signature="e#24371#24532#0" />
+            <element signature="e#25234#25304#0" />
+            <element signature="e#25666#26588#0" />
+            <element signature="e#25979#26015#1" />
+            <element signature="e#26174#26248#0" />
+            <element signature="e#26770#27000#0" />
+            <element signature="e#27036#27127#0" />
+            <element signature="e#27133#27224#0" />
+            <element signature="e#27230#27323#0" />
+            <element signature="e#27329#27436#0" />
+            <element signature="e#27040#27079#0" />
+            <element signature="e#27120#27159#0" />
+            <element signature="e#27523#27744#0" />
+            <element signature="e#27987#28100#0" />
+            <element signature="e#28149#28196#1" />
           </folding>
         </state>
       </provider>
