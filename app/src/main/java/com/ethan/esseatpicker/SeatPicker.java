@@ -512,7 +512,7 @@ public class SeatPicker extends View {
     }
 
 
-    private float lengthX = 0;
+    private float lengthX, lengthY = 0;
     private float downX, downY;
     @Override
     public boolean onTouchEvent(MotionEvent event) {
@@ -527,13 +527,16 @@ public class SeatPicker extends View {
         switch (event.getAction()){
             case MotionEvent.ACTION_DOWN:
                 downX = event.getX();
+                downY = event.getY();
                 break;
             case MotionEvent.ACTION_MOVE:
                 break;
             case MotionEvent.ACTION_UP:
                 autoScale();
                 lengthX = x - downX;
-                if ((lengthX > 30 || lengthX < -30)) {
+                lengthY = y - downY;
+                if ((Math.abs(lengthX) > 30
+                        || Math.abs(lengthY) > 30)) {
                     autoScroll();
                 }
                 break;
@@ -669,7 +672,6 @@ public class SeatPicker extends View {
             }
         }
         moveAnimate(start,end);
-
     }
 
 
